@@ -20,6 +20,7 @@ class Command {
             console.log(command);
             console.log('\n');
             result = require("child_process").execSync(`proot-distro login ubuntu -- bash -c 'node -e \"${command}\"'`).toString().replaceAll("\\n", "");
+            console.log(result);
         } catch (err) {
             result = String(err);
             failed = true;
