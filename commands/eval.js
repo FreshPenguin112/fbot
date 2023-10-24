@@ -22,11 +22,11 @@ class Command {
             console.log('\n');
             result = execSync(`proot-distro login ubuntu -- bash -c 'node -e "${command}"'`).toString();
             result = result.replaceAll("\\n", "").replaceAll("\n", "");
-            console.log(result.length);
-            console.log(command)
             if (result.length === 0) {
                 result = execSync(`proot-distro login ubuntu -- bash -c 'node -e "eval(${command})"'`).toString();
             }
+            console.log(result.length);
+            console.log(command)
         } catch (err) {
             result = String(err);
             failed = true;
