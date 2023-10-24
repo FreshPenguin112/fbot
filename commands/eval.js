@@ -15,20 +15,19 @@ class Command {
         let result = '';
         let failed = false;
         try {
-            const command = "eval\(" + args.join(' ') + "\)".replace(/[_!#&'*;<>?\[\]^`{|}]/g, '\\$&');
+            const command = args.join(' ').replace(/[_!#&'*;<>?\[\]^`{|}]/g, '\\$&');
             console.log('\n');
             console.log(`${message.author.username}:`);
             //console.log(command);
             console.log(command);
             console.log('\n');
             result = execSync(`proot-distro login ubuntu -- bash -c 'node -e "${command}"'`).toString().replaceAll("\\n", "").replaceAll("\n", "");
-            /*console.log(execSync(`proot-distro login ubuntu -- bash -c 'node -e "${command}"'`).toString().replaceAll("\\n", "").replaceAll("\n", ""));
-            if (execSync(`proot-distro login ubuntu -- bash -c 'node -e "${command}"'`).toString().replaceAll("\\n", "").replaceAll("\n", "").length.toString() === "0") {
-                console.log("changing");
-                result = execSync(`proot-distro login ubuntu -- bash -c 'node -e "eval\(${command}\)"'`).toString().replaceAll("\\n", "").replaceAll("\n", "");
-            } else {
-                result = execSync(`proot-distro login ubuntu -- bash -c 'node -e "${command}"'`).toString().replaceAll("\\n", "").replaceAll("\n", "");
-            }*/
+            result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
+            if (result.length === 0) {
+                console.log("changing result");
+                result = execSync(`proot-distro login ubuntu -- bash -c 'node -e "console.log(${command})"'`);
+                result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
+            }
             console.log(result.length);
             console.log(command)
         } catch (err) {
