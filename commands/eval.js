@@ -31,9 +31,9 @@ class Command {
             console.log(result.length);
             console.log(command)
         } catch (err) {
-            //let regex = new RegExp(`/.*Error: .*/`);
+            let regex = new RegExp(`/.*Error: .*/`);
             result = "the j";
-            console.log(Object.getOwnPropertyNames(String(err.output).match(`/.*Error: .*/`)));
+            console.log(regex.exec(err.output))
             /*console.log(Object.getOwnPropertyNames(err));
             console.error("logging debug data:")
             console.error();*/
