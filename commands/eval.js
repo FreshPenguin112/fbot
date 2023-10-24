@@ -31,7 +31,7 @@ class Command {
             console.log(result.length);
             console.log(command)
         } catch (err) {
-            result = err.message;
+            result = err.name + ":" + err.message;
             //result = "lmao you did a error somewhere nerd :nerdclown: :haha:"
             failed = true;
 
@@ -39,7 +39,7 @@ class Command {
                 result = `${err.stack}`;
             }*/
         }
-        message.reply(`${failed ? '❌ - epic fucking fail loser\n' : ''}\`\`\`${failed ? result : JSON.stringify(result)}\`\`\``);
+        //message.reply(`${failed ? '❌ - epic fucking fail loser\n' : ''}\`\`\`${failed ? result : JSON.stringify(result)}\`\`\``);
     }
     invoke(message, args, util) {
         try {
