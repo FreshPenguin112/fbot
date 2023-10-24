@@ -15,7 +15,7 @@ class Command {
         let result = '';
         let failed = false;
         try {
-            const command = "eval(" + args.join(' ') + ")".replace(/[_!#&'*;<>?\[\]^`{|}]/g, '\\$&');
+            const command = "eval\\(" + args.join(' ') + "\\)".replace(/[_!#&'*;<>?\[\]^`{|}]/g, '\\$&');
             console.log('\n');
             console.log(`${message.author.username}:`);
             //console.log(command);
