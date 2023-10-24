@@ -28,9 +28,9 @@ class Command {
                 result = execSync(`proot-distro login ubuntu -- bash -c 'node -e "eval\(${command}\)"'`).toString().replaceAll("\\n", "").replaceAll("\n", "");
             } else {
                 result = execSync(`proot-distro login ubuntu -- bash -c 'node -e "${command}"'`).toString().replaceAll("\\n", "").replaceAll("\n", "");
-            }
+            }*/
             console.log(result.length);
-            console.log(command)*/
+            console.log(command)
         } catch (err) {
             result = String(err);
             failed = true;
