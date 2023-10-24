@@ -39,7 +39,11 @@ class Command {
                 result = `${err.stack}`;
             }*/
         }
-        message.reply(`${failed ? '❌ - epic fucking fail loser\n' : ''}\`\`\`${failed})}\`\`\``);
+        message.reply(`
+        \`\`\`
+        ${result}
+        \`\`\`
+        `);
     }
     invoke(message, args, util) {
         try {
