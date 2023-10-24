@@ -20,9 +20,11 @@ class Command {
             console.log(`${message.author.username}:`);
             console.log(command);
             console.log('\n');
-            result = execSync(`proot-distro login ubuntu -- bash -c 'node -e \"${command}\"'`).toString();
+            result = execSync(`proot-distro login ubuntu -- bash -c 'node -e "${command}"'`).toString();
             result = result.replaceAll("\\n", "").replaceAll("\n", "");
-            //console.log(result.replaceAll("\n", ""));
+            if (result === "") {
+                result = execSync(`proot-distro login ubuntu -- bash -c 'node -e "eval(${command})"'`).toString();
+            }
         } catch (err) {
             result = String(err);
             failed = true;
