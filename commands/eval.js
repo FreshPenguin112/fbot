@@ -11,6 +11,7 @@ class Command {
 
 
     run(message, args, util) {
+        const {execSync} = require("child_process");
         let result = '';
         let failed = false;
         try {
@@ -19,8 +20,9 @@ class Command {
             console.log(`${message.author.username}:`);
             console.log(command);
             console.log('\n');
-            result = require("child_process").execSync(`proot-distro login ubuntu -- bash -c 'node -e \"${command}\"'`).toString().replaceAll("\\n", "");
-            console.log(result);
+            result = execSync(`proot-distro login ubuntu -- bash -c 'node -e \"${command}\"'`).toString();
+            result = result.replaceAll("\\n", "").replaceAll("\n", "");
+            //console.log(result.replaceAll("\n", ""));
         } catch (err) {
             result = String(err);
             failed = true;
