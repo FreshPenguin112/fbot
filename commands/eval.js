@@ -15,7 +15,7 @@ class Command {
         let result = '';
         let failed = false;
         try {
-            const command = args.join(' ').replace(/[_!#&'*;<>?\[\]^`{|}]/g, '\\$&');
+            const command = JSON.stringify(args.join(' '))
             console.log('\n');
             console.log(`${message.author.username}:`);
             //console.log(command);
@@ -34,9 +34,9 @@ class Command {
             result = String(err);
             failed = true;
 
-            if (err.stack) {
+            /*if (err.stack) {
                 result = `${err.stack}`;
-            }
+            }*/
         }
         message.reply(`${failed ? '❌ - epic fucking fail loser\n' : ''}\`\`\`${failed ? result : JSON.stringify(result)}\`\`\``);
     }
