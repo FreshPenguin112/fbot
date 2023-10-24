@@ -35,7 +35,7 @@ class Command {
             let regex = /.*Error: .*/;
             result = "the j";
             console.log(
-                Object.getOwnPropertyNames((err.message + "").match(regex))
+                regex.exec((err.message + "").toString())[0]
                 );
             /*console.log(Object.getOwnPropertyNames(err));
             console.error("logging debug data:")
