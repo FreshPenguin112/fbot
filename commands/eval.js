@@ -34,7 +34,7 @@ class Command {
             result = "the j";// + ":" + err.message;
             console.log(Object.getOwnPropertyNames(err));
             console.error("logging debug data:")
-            console.error(String(err.output));
+            console.error(String(err.stdout));
             //result = "lmao you did a error somewhere nerd :nerdclown: :haha:"
             failed = true;
 
