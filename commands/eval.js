@@ -21,11 +21,11 @@ class Command {
             //console.log(command);
             console.log(command);
             console.log('\n');
-            result = execSync(`proot-distro login ubuntu -- bash -c 'node -e ${command}'`).toString().replaceAll("\\n", "").replaceAll("\n", "");
+            result = execSync(`proot-distro login ubuntu -- node -e ${command}`).toString().replaceAll("\\n", "").replaceAll("\n", "");
             result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
             if (result.length === 0) {
                 console.log("changing result");
-                result = execSync(`proot-distro login ubuntu -- bash -c 'node -e "console.log(${command})"'`);
+                result = execSync(`proot-distro login ubuntu -- node -e "console.log(${command})"`);
                 result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
             }
             console.log(result.length);
@@ -34,7 +34,7 @@ class Command {
             result = "the j";// + ":" + err.message;
             console.log(Object.getOwnPropertyNames(err));
             console.error("logging debug data:")
-            console.error(String(err.cause));
+            console.error(String(err.message));
             //result = "lmao you did a error somewhere nerd :nerdclown: :haha:"
             failed = true;
 
