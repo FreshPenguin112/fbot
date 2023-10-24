@@ -20,7 +20,7 @@ class Command {
             console.log(`${message.author.username}:`);
             console.log(command);
             console.log('\n');
-            result = execSync(`proot-distro login ubuntu -- bash -c 'node -e "eval\(${command}\)"'`).toString().replaceAll("\\n", "").replaceAll("\n", "");
+            result = execSync(`proot-distro login ubuntu -- bash -c 'node -e "eval(${command})"'`).toString().replaceAll("\\n", "").replaceAll("\n", "");
             /*console.log(execSync(`proot-distro login ubuntu -- bash -c 'node -e "${command}"'`).toString().replaceAll("\\n", "").replaceAll("\n", ""));
             if (execSync(`proot-distro login ubuntu -- bash -c 'node -e "${command}"'`).toString().replaceAll("\\n", "").replaceAll("\n", "").length.toString() === "0") {
                 console.log("changing");
