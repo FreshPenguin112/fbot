@@ -21,7 +21,7 @@ class Command {
             //console.log(command);
             console.log(command);
             console.log('\n');
-            result = execSync(`proot-distro login ubuntu -- bash -c 'node -e "${command}"'`).toString().replaceAll("\\n", "").replaceAll("\n", "");
+            result = execSync(`proot-distro login ubuntu -- bash -c 'node -e ${command}'`).toString().replaceAll("\\n", "").replaceAll("\n", "");
             result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
             if (result.length === 0) {
                 console.log("changing result");
