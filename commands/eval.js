@@ -32,7 +32,7 @@ class Command {
             console.log(command)
         } catch (err) {
             let regex = new RegExp(`/.*Error: .*/`);
-            result = String(regex.match(err.output).toString());
+            result = String(err.output).toString());
             /*console.log(Object.getOwnPropertyNames(err));
             console.error("logging debug data:")
             console.error();*/
