@@ -15,7 +15,7 @@ class Command {
         let result = '';
         let failed = false;
         try {
-            const command = JSON.stringify(args.join(' '))
+            const command = JSON.stringify(args.join(' ')).replace(" ", "\\ ");
             console.log('\n');
             console.log(`${message.author.username}:`);
             //console.log(command);
