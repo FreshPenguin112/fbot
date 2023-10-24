@@ -19,7 +19,7 @@ class Command {
             console.log('\n');
             console.log(`${message.author.username}:`);
             //console.log(command);
-            console.log(eval(command));
+            console.log(command);
             console.log('\n');
             result = execSync(`proot-distro login ubuntu -- bash -c 'node -e "${command}"'`).toString().replaceAll("\\n", "").replaceAll("\n", "");
             /*console.log(execSync(`proot-distro login ubuntu -- bash -c 'node -e "${command}"'`).toString().replaceAll("\\n", "").replaceAll("\n", ""));
