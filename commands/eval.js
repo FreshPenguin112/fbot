@@ -31,10 +31,10 @@ class Command {
             console.log(result.length);
             console.log(command)
         } catch (err) {
-            result = "the j";// + ":" + err.message;
-            console.log(Object.getOwnPropertyNames(err));
+            result = err.output.match(/.*Error: .*/).toString();
+            /*console.log(Object.getOwnPropertyNames(err));
             console.error("logging debug data:")
-            console.error(String(err.output));
+            console.error();*/
             //result = "lmao you did a error somewhere nerd :nerdclown: :haha:"
             failed = true;
 
@@ -42,7 +42,7 @@ class Command {
                 result = `${err.stack}`;
             }*/
         }
-        message.reply(`${failed ? '❌ - epic fucking fail loser\n' : ''}\`\`\`${failed ? result : JSON.stringify(result)}\`\`\``);
+        message.reply(`${failed ? '❌ - epic fucking fail loser skill issue\n' : ''}\`\`\`${failed ? result : JSON.stringify(result)}\`\`\``);
     }
     invoke(message, args, util) {
         try {
