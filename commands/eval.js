@@ -32,7 +32,7 @@ class Command {
             console.log(command)
         } catch (err) {
             result = "the j";// + ":" + err.message;
-            console.log(Object.keys(err));
+            console.log(Object.getOwnPropertyNames(err));
             //result = "lmao you did a error somewhere nerd :nerdclown: :haha:"
             failed = true;
 
