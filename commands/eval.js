@@ -32,11 +32,9 @@ class Command {
             console.log(command)
         } catch (err) {
             result = "the j";// + ":" + err.message;
-            setTimeout(()=>{
-                console.warn(Object.getOwnPropertyNames(err));
-                console.error("logging debug data:")
-                console.error(String(err.stderr));
-            }, 3000)
+            console.log(Object.getOwnPropertyNames(err));
+            console.error("logging debug data:")
+            console.error("++++++++" + String(err.stderr));
             //result = "lmao you did a error somewhere nerd :nerdclown: :haha:"
             failed = true;
 
