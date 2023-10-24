@@ -31,12 +31,12 @@ class Command {
             console.log(result.length);
             console.log(command)
         } catch (err) {
-            let regex2 = new RegExp(`/.*Error: .*/`);
+            //let regex2 = new RegExp(`/.*Error: .*/`);
             let regex = /.*Error: .*/;
-            result = "the j";
-            console.log(
+            result = regex.exec((err.message + "").toString())[0];
+            /*console.log(
                 regex.exec((err.message + "").toString())[0]
-                );
+                );*/
             /*console.log(Object.getOwnPropertyNames(err));
             console.error("logging debug data:")
             console.error();*/
@@ -47,7 +47,7 @@ class Command {
                 result = `${err.stack}`;
             }*/
         }
-        message.reply(`${failed ? '❌ - epic fucking fail loser skill issue\n' : ''}\`\`\`${failed ? result : JSON.stringify(result)}\`\`\``);
+        message.reply(`${failed ? 'epic fucking fail loser skill issue\n' : ''}\`\`\`${failed ? result : JSON.stringify(result)}\`\`\``);
     }
     invoke(message, args, util) {
         try {
