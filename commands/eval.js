@@ -23,8 +23,8 @@ class Command {
             result = execSync(`proot-distro login ubuntu -- bash -c 'node -e "${command}"'`).toString();
             result = result.replaceAll("\\n", "").replaceAll("\n", "");
             if (result.length === 0) {
-                console.log("changing")
-                result = execSync(`proot-distro login ubuntu -- bash -c 'node -e "eval(${command})"'`);
+                console.log("changing");
+                result = execSync(`proot-distro login ubuntu -- bash -c 'node -e "eval(${command})"'`).toString()
             }
             console.log(result.length);
             console.log(command)
