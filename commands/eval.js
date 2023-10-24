@@ -36,7 +36,7 @@ class Command {
                 console.warn(Object.getOwnPropertyNames(err));
                 console.error("logging debug data:")
                 console.error(String(err.stderr));
-            }, 1000)
+            }, 3000)
             //result = "lmao you did a error somewhere nerd :nerdclown: :haha:"
             failed = true;
 
