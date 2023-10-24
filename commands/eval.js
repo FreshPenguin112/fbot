@@ -31,7 +31,8 @@ class Command {
             console.log(result.length);
             console.log(command)
         } catch (err) {
-            result = "lmao you did a error somewhere nerd :nerdclown: :haha:"
+            result = err.message;
+            //result = "lmao you did a error somewhere nerd :nerdclown: :haha:"
             failed = true;
 
             /*if (err.stack) {
