@@ -32,6 +32,7 @@ class Command {
                 command = require("uglify-js").minify(JSON.stringify(command));
                 console.log(command.error);
                 command = command.code;
+                console.log(command);
                 command = `console.log(eval(${command}))`;
                 console.log(command);
                 b = btoa(command);
