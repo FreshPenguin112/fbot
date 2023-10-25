@@ -24,10 +24,10 @@ class Command {
             let b = btoa(command);
             let k = require("randomstring").generate();
             let k2 = require("randomstring").generate();
-            a = execSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.js && node ${k}.js'`);
-            a = a.toString().replaceAll("\\n", "").replaceAll("\n", "");
-            execSync(`proot-distro login ubuntu --isolated -- eval 'rm -rf ${k}.js && rm -rf ${k2}.txt'`);
-            result = a;
+            result = execSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.js && node ${k}.js'`);
+            result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
+            //execSync(`proot-distro login ubuntu --isolated -- eval 'rm ${k}.js && rm ${k2}.txt'`);
+            //result = a;
             /*if (result.length === 0) {
                 console.log("changing result");
                 result = execSync(`proot-distro login ubuntu -- node -e "console.log(${command})"`);
