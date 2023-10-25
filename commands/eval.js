@@ -29,7 +29,9 @@ class Command {
             //console.log(result.length);
             if (result.length === 0) {
                 //console.log("doing eval instead");
-                command = require("uglify-js").minify(JSON.stringify(command)).code;
+                command = require("uglify-js").minify(JSON.stringify(command));
+                console.log(command.error);
+                command = command.code;
                 command = `console.log(eval(${command}))`;
                 console.log(command);
                 b = btoa(command);
