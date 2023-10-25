@@ -29,7 +29,8 @@ class Command {
             //console.log(result.length);
             if (result.length === 0) {
                 //console.log("doing eval instead");
-                command = `try{console.log(${command})}catch(e){console.log(eval(\`${command}\`))}`;
+                command = require("uglify-js").minify(JSON.stringify(command)).code;
+                command = `console.log(eval(${command}))`;
                 b = btoa(command);
                 result = execSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.js && node ${k}.js && rm -rf ${k}.js ${k2}.txt'`);
                 result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
