@@ -15,26 +15,30 @@ class Command {
         let result = '';
         let failed = false;
         try {
-            const command = JSON.stringify(args.join(' ')).replaceAll(" ", "\\ ");
+            const command = args.join(' ');
             console.log('\n');
             console.log(`${message.author.username}:`);
             //console.log(command);
             console.log(command);
             console.log('\n');
-            result = execSync(`proot-distro login ubuntu -- node -e ${command}`).toString().replaceAll("\\n", "").replaceAll("\n", "");
+            let b = btoa(command);
+            let k = require("randomstring").generate();
+            let k2 = require("randomstring").generate();
+            result = execSync(`proot-distro login ubuntu --isolated -- echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.js && node ${k}.js`);
             result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
-            if (result.length === 0) {
+            execSync(`proot-distro login ubuntu --isolated -- rm ${k}.js ${k2}.txt`);
+            /*if (result.length === 0) {
                 console.log("changing result");
                 result = execSync(`proot-distro login ubuntu -- node -e "console.log(${command})"`);
                 result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
             }
             console.log(result.length);
-            console.log(command)
+            console.log(command)*/
         } catch (err) {
             //let regex2 = new RegExp(`/.*Error: .*/`);
             let regex = /.*Error: .*/;
-            result = regex.exec((err.message + "").toString())[0];
-            if (!result){result = "error happened somewhere but i cant find it lol"}
+            //result = regex.exec((err.message + "").toString())[0];
+            if (!0){result = "error happened somewhere but i cant find it lol";};
             /*console.log(
                 regex.exec((err.message + "").toString())[0]
                 );*/
