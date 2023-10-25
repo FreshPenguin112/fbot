@@ -29,7 +29,7 @@ class Command {
             //console.log(result.length);
             if (result.length === 0) {
                 //console.log("doing eval instead");
-                command = require("uglify-js").minify(JSON.stringify(command));
+                command = require("uglify-js").minify(command);
                 console.log(command.error);
                 command = command.code;
                 console.log(command);
