@@ -29,7 +29,7 @@ class Command {
             if (result === ""){
                 command = `eval(\`${command}\`)`;
                 result = execSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.js && node ${k}.js && rm -rf ${k}.js ${k2}.txt'`);
-                result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");f
+                result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
             }
             //execSync(`proot-distro login ubuntu --isolated -- eval 'rm ${k}.js && rm ${k2}.txt'`);
             //result = a;
@@ -44,12 +44,12 @@ class Command {
             //let regex2 = new RegExp(`/.*Error: .*/`);
             //let regex = /.*Error: .*/;
             //result = regex.exec((err.message + "").toString())[0];
-            /*if (!(err.message + "").split("/root/")[1]) {
+            if (!(err.message + "").split("/root/")[1]) {
                 result = "error happened somewhere but i cant find it lol";
             } else {
                 result = (err.message + "").split("/root/")[1]
-            }*/
-            result = err.message;
+            }
+            //result = err.message;
         
             /*console.log(
                 regex.exec((err.message + "").toString())[0]
