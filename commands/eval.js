@@ -26,7 +26,9 @@ class Command {
             let k2 = require("randomstring").generate();
             result = execSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.js && node ${k}.js && rm -rf ${k}.js ${k2}.txt'`);
             result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
-            if (result === ""){
+            console.log(result.length);
+            if (result.length === 0){
+                console.log("doing eval instead");
                 command = `eval(\`${command}\`)`;
                 b = btoa(command);
                 result = execSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.js && node ${k}.js && rm -rf ${k}.js ${k2}.txt'`);
