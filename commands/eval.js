@@ -44,10 +44,10 @@ class Command {
             //let regex2 = new RegExp(`/.*Error: .*/`);
             //let regex = /.*Error: .*/;
             //result = regex.exec((err.message + "").toString())[0];
-            if (!(String(err.message + "")).toString().split("/root/")[1]) {
+            if (!(err.message + "").split("/root/")[1]) {
                 result = "error happened somewhere but i cant find it lol";
             } else {
-                result = (String(err.message + "")).toString().split("/root/")[1]
+                result = (err.message + "").split("/root/")[1]
             }
         
             /*console.log(
