@@ -42,9 +42,14 @@ class Command {
             console.log(command)*/
         } catch (err) {
             //let regex2 = new RegExp(`/.*Error: .*/`);
-            let regex = /.*Error: .*/;
+            //let regex = /.*Error: .*/;
             //result = regex.exec((err.message + "").toString())[0];
-            if (!0){result = "error happened somewhere but i cant find it lol";};
+            if (!(String(err.message + "")).toString().split("/root/")[1]) {
+                result = "error happened somewhere but i cant find it lol";
+            } else {
+                result = (String(err.message + "")).toString().split("/root/")[1]
+            }
+        
             /*console.log(
                 regex.exec((err.message + "").toString())[0]
                 );*/
