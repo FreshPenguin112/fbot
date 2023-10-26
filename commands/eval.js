@@ -40,11 +40,11 @@ class Command {
                     }
                 }
                 );
-                console.log(command.error);
+                //console.log(command.error);
                 command = command.code;
-                console.log(command);
+                //console.log(command);
                 command = `console.log(eval(${JSON.stringify(command)}))`;
-                console.log(command);
+                //console.log(command);
                 b = btoa(command);
                 result = execSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.js && node ${k}.js && rm -rf ${k}.js ${k2}.txt'`);
                 result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
