@@ -29,7 +29,18 @@ class Command {
             //console.log(result.length);
             if (result.length === 0) {
                 //console.log("doing eval instead");
-                command = require("uglify-js").minify(command, {compress: {dead_code: false}});
+                command = require("uglify-js").minify(command, 
+                    {
+                    compress: {
+                        dead_code: false,
+                        expression: true
+                    },
+                    mangle: {
+                        eval: true,
+                        toplevel: true
+                    }
+                }
+                );
                 console.log(command.error);
                 command = command.code;
                 console.log(command);
