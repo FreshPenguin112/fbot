@@ -32,7 +32,6 @@ class Command {
                 command = require("uglify-js").minify(command, 
                     {
                     compress: {
-                        dead_code: false,
                         expression: true
                     },
                     mangle: {
