@@ -46,13 +46,14 @@ class Command {
                 type = "js";
             }
             result = exec(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`);
-            var u;
-            result.stdout.on("data", function(d){u=d.toString()});
             cargs.forEach(f=>result.stdin.write(f + "\n"))
             result.stdin.end();
+            result.stdout.on("data", (d, result)=>{
+            let u = d.toString();
             console.log(u);
             result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
             //console.log(result.length);
+            });
             if (result.length === 0) {
                 //console.log("doing eval instead");
                 if(!py){command = require("uglify-js").minify(command, 
