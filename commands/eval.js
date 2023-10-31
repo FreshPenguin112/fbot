@@ -16,7 +16,7 @@ class Command {
         let failed = false;
         try {
             let command = args.join(' ').replaceAll("\`\`\`js", "").replaceAll("\`\`\`py", "").replaceAll("\`\`\`", "");
-            let py = command.startsWith("#py")||command.startsWith("# py");
+            let py = command.contains("#py")||command.contains("# py");
             if (py) {
                 command = `require("child_process").execSync("python3.11 <<< ${JSON.stringify(command)}").toString()`
             }
