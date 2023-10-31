@@ -55,7 +55,7 @@ class Command {
                            from contextlib import redirect_stdout
                            stdout = io.StringIO()
                            x = base64.b64decode
-                           with redirect_stdout(stdout): exec(x(command))
+                           with redirect_stdout(stdout): exec('''x("${command}")''')
                            print(stdout.getvalue())`
                 }
                 else {
