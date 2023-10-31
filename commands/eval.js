@@ -16,7 +16,7 @@ class Command {
         let failed = false;
         try {
             let command = args.join(' ').replaceAll("\`\`\`js", "").replaceAll("\`\`\`py", "").replaceAll("\`\`\`", "");
-            let py = command.contains("#py")||command.contains("# py");
+            let py = command.includes("#py")||command.includes("# py");
             console.log(py);
             console.log('\n');
             console.log(`${message.author.username}:`);
@@ -69,7 +69,7 @@ class Command {
             //let regex2 = new RegExp(`/.*Error: .*/`);
             //let regex = /.*Error: .*/;
             //result = regex.exec((err.message + "").toString())[0];
-            console.log(err.message)
+            console.log(err.message);
             if (!(err.message + "").split("/root/")[1]) {
                 result = "error happened somewhere but i cant find it lol";
             } else {
