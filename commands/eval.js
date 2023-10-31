@@ -22,7 +22,7 @@ class Command {
             console.log(`${message.author.username}:`);
             //console.log(command);
             if (!!py) {
-                command = `require("child_process").execSync(\`python3.11 <<< ${JSON.stringify(command)}\`).toString()`;
+                command = `require("child_process").execSync(\`python3.11 -c ${JSON.stringify(command)}\`).toString()`;
             }
             console.log(command);
             console.log('\n');
