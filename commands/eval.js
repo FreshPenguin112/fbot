@@ -15,15 +15,18 @@ class Command {
         let result = '';
         let failed = false;
         try {
-            let command = args.join(' ').replaceAll("\`\`\`js", "").replaceAll("\`\`\`py", "").replaceAll("\`\`\`", "");
+            let command = args.join(' ').replaceAll("\`\`\`js", "").replaceAll("\`\`\`py", "").replaceAll("\`\`\`", "").replaceAll("\\n", "");
             let py = command.includes("#py")||command.includes("# py");
             console.log(py);
             console.log('\n');
             console.log(`${message.author.username}:`);
             //console.log(command);
-            /*if (!!py) {
-                command = `require("child_process").execSync(\`python3.11 -c ${JSON.stringify(command)}\`).toString()`;
-            }*/
+            if (!!py) {
+                command = JSON.stringify(command);
+                let r = JSON.stringify(`exec(${command})`);
+                console.log(r);
+                command = `require("child_process").execSync(\`python3.11 -c ${r}\`).toString()`;
+            }
             console.log(command);
             console.log('\n');
             let b = btoa(command);
@@ -69,7 +72,7 @@ class Command {
             //let regex2 = new RegExp(`/.*Error: .*/`);
             //let regex = /.*Error: .*/;
             //result = regex.exec((err.message + "").toString())[0];
-            console.log(err.message);
+            console.log(err.stack);
             if (!(err.message + "").split("/root/")[1]) {
                 result = "error happened somewhere but i cant find it lol";
             } else {
