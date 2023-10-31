@@ -11,7 +11,7 @@ class Command {
 
 
     run(message, args, util) {
-        const {execSync} = require("child_process");
+        const {execSync, exec} = require("child_process");
         let result = '';
         let failed = false;
         try {
@@ -37,6 +37,7 @@ class Command {
             let k2 = require("randomstring").generate();
             let runner;
             let type;
+            let data;
             if (py) {
                 runner = "python3.11";
                 type = "py";
@@ -44,7 +45,10 @@ class Command {
                 runner = "node";
                 type = "js";
             }
-            result = execSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`);
+            result = exec(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`);
+            var w = a => {result = a}
+            result.on("data", d => {w(d)})
+            for (var i in cargs) result.stdin.write(i + "\n")
             result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
             //console.log(result.length);
             if (result.length === 0) {
