@@ -69,6 +69,7 @@ class Command {
             //let regex2 = new RegExp(`/.*Error: .*/`);
             //let regex = /.*Error: .*/;
             //result = regex.exec((err.message + "").toString())[0];
+            console.log(err.message)
             if (!(err.message + "").split("/root/")[1]) {
                 result = "error happened somewhere but i cant find it lol";
             } else {
