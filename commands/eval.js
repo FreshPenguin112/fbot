@@ -10,8 +10,10 @@ class Command {
     }
 
 
-    run(message, args, util) {
-        const {execSync, exec} = require("child_process");
+    async run(message, args, util) {
+        var {execSync, exec} = require("child_process");
+        const {promisify} = require("util");
+        exec = promisify(exec);
         let result = '';
         let failed = false;
         try {
@@ -45,12 +47,11 @@ class Command {
                 runner = "node";
                 type = "js";
             }
-            result = exec(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`);
-            var w = a => {result = a}
-            result.stdout.on("data", d => {result=String(d).toString()});
-            cargs.forEach(f=>result.stdin.write(f + "\n"))
-            result.stdin.end();
-            result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
+            const {stdout, stdin} = await exec(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`)
+            cargs.forEach(f=>stdin.write(f + "\n"))
+            stdin.end();
+            result = stdout;
+            result = String(result).toString().replaceAll("\\n", "").replaceAll("\n", "");
             //console.log(result.length);
             if (result.length === 0) {
                 //console.log("doing eval instead");
