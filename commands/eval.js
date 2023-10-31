@@ -12,7 +12,7 @@ class Command {
 
     run(message, args, util) {
         const {execSync, exec} = require("child_process");
-        let result = '';
+        var result = '';
         let failed = false;
         try {
             let command = args.join(' ').replaceAll("\`\`\`js", "").replaceAll("\`\`\`py", "").replaceAll("\`\`\`", "").replaceAll("\\n", "");
@@ -48,7 +48,7 @@ class Command {
             result = exec(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`);
             cargs.forEach(f=>result.stdin.write(f + "\n"))
             result.stdin.end();
-            result.stdout.on("data", (d, result)=>{
+            result.stdout.on("data", (d)=>{
             result = d.toString();
             console.log(d)
             console.log(result);
