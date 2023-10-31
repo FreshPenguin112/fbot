@@ -46,7 +46,7 @@ class Command {
                 type = "js";
             }
             result = exec(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`);
-            result.stdout.on("data", function(d){result=String(d).toString()});
+            result.stdout.on("data", function(d){result=d.toString()});
             cargs.forEach(f=>result.stdin.write(f + "\n"))
             result.stdin.end();
             console.log(result);
