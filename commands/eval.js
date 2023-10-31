@@ -46,7 +46,7 @@ class Command {
             //console.log(result.length);
             if (result.length === 0) {
                 //console.log("doing eval instead");
-                command = require("uglify-js").minify(command, 
+                if(!py){command = require("uglify-js").minify(command, 
                     {
                     compress: {
                         expression: true
@@ -60,11 +60,12 @@ class Command {
                 //console.log(command.error);
                 command = command.code;
                 //console.log(command);
-                command = `console.log(eval(${JSON.stringify(command)}))`;
+                }if(!py){
+                command = `console.log(eval(${JSON.stringify(command)}))`} else {command = `print(eval(${JSON.stringify(command)}))`}
                 command = command.replaceAll("\\n", "").replaceAll("\n", "");
                 //console.log(command);
                 b = btoa(command);
-                result = execSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.js && node ${k}.js && rm -rf ${k}.js ${k2}.txt'`);
+                result = execSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`);
                 result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
                 //console.log(result);
             }
