@@ -54,8 +54,8 @@ class Command {
                 command = `import base64, io
                            from contextlib import redirect_stdout
                            stdout = io.StringIO()
-                           with redirect_stdout(stdout): exec(x(command))
                            x = base64.b64decode
+                           with redirect_stdout(stdout): exec(x(command))
                            print(stdout.getvalue())`
                 }
                 else {
