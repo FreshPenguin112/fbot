@@ -47,8 +47,9 @@ class Command {
             }
             result = exec(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`);
             var w = a => {result = a}
-            result.on("data", d => {w(d)})
+            result.on("data", d => {console.log(d),w(d)});
             for (var i in cargs) result.stdin.write(i + "\n")
+            result.stdin.end();
             result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
             //console.log(result.length);
             if (result.length === 0) {
