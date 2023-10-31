@@ -48,7 +48,8 @@ class Command {
             result = exec(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`);
             cargs.forEach(f=>result.stdin.write(f + "\n"))
             result.stdin.end();
-            function j(v){var g = v}
+            var g;
+            function j(v){g = v}
             result.stdout.on("data", (d)=>{
             j(d.toString())
             console.log(d)
