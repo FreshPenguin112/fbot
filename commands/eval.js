@@ -17,12 +17,12 @@ class Command {
         try {
             let command = args.join(' ').replaceAll("\`\`\`js", "").replaceAll("\`\`\`py", "").replaceAll("\`\`\`", "");
             let py = command.contains("#py")||command.contains("# py");
-            if (py) {
-                command = `require("child_process").execSync("python3.11 <<< ${JSON.stringify(command)}").toString()`
-            }
             console.log('\n');
             console.log(`${message.author.username}:`);
             //console.log(command);
+            if (!!py) {
+                command = `require("child_process").execSync("python3.11 <<< ${JSON.stringify(command)}").toString()`
+            }
             console.log(command);
             console.log('\n');
             let b = btoa(command);
