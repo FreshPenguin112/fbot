@@ -16,7 +16,7 @@ class Command {
         let failed = false;
         try {
             let command = args.join(' ').replaceAll("\`\`\`js", "").replaceAll("\`\`\`py", "").replaceAll("\`\`\`", "");
-            let py = command.startsWith("#py")||command.startsWith("# py");
+            //let py = command.startsWith("#py")||command.startsWith("# py");
             console.log('\n');
             console.log(`${message.author.username}:`);
             //console.log(command);
@@ -25,12 +25,12 @@ class Command {
             let b = btoa(command);
             let k = require("randomstring").generate();
             let k2 = require("randomstring").generate();
-            //result = execSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.js && node ${k}.js && rm -rf ${k}.js ${k2}.txt'`);
-            //result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
+            result = execSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.js && node ${k}.js && rm -rf ${k}.js ${k2}.txt'`);
+            result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
             //console.log(result.length);
             if (!0) {
                 //console.log("doing eval instead");
-                if (!py){
+                if (true){
                 command = require("uglify-js").minify(command, 
                     {
                     compress: {
@@ -50,12 +50,13 @@ class Command {
                 //console.log(command.error);
                 //command = command.code;
                 //console.log(command);
-                if (py) {
+                if (!1) {
                 command = `import base64, io
                            from contextlib import redirect_stdout
                            stdout = io.StringIO()
                            x = base64.b64decode
-                           with redirect_stdout(stdout): exec(x(${JSON.stringify(command)}))
+                           with redirect_stdout(stdout):
+                               exec(x(${JSON.stringify(command)}))
                            print(stdout.getvalue())`
                 }
                 else {
