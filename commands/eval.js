@@ -21,9 +21,9 @@ class Command {
             console.log('\n');
             console.log(`${message.author.username}:`);
             //console.log(command);
-            if (!!py) {
+            /*if (!!py) {
                 command = `require("child_process").execSync(\`python3.11 -c ${JSON.stringify(command)}\`).toString()`;
-            }
+            }*/
             console.log(command);
             console.log('\n');
             let b = btoa(command);
