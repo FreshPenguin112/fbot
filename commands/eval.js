@@ -15,7 +15,8 @@ class Command {
         let result = '';
         let failed = false;
         try {
-            let command = args.join(' ');
+            let command = args.join(' ').replaceAll("\`\`\`js", "").replaceAll("\`\`\`py", "").replaceAll("\`\`\`", "");
+            let py = command.startsWith("#py")||command.startsWith("# py");
             console.log('\n');
             console.log(`${message.author.username}:`);
             //console.log(command);
@@ -24,11 +25,12 @@ class Command {
             let b = btoa(command);
             let k = require("randomstring").generate();
             let k2 = require("randomstring").generate();
-            result = execSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.js && node ${k}.js && rm -rf ${k}.js ${k2}.txt'`);
-            result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
+            //result = execSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.js && node ${k}.js && rm -rf ${k}.js ${k2}.txt'`);
+            //result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
             //console.log(result.length);
-            if (result.length === 0) {
+            if (!0) {
                 //console.log("doing eval instead");
+                if (!py){
                 command = require("uglify-js").minify(command, 
                     {
                     compress: {
@@ -38,18 +40,36 @@ class Command {
                         eval: true,
                         toplevel: true
                     }
-                }
-                );
-                //console.log(command.error);
+                    });
                 command = command.code;
+                
+                } else {
+                command = b;
+                //command = execSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}_${k} && echo "base64 --decode ${k2}_${k}" > ${k} && pyminify ${k} && rm -rf ${k2}_${k} ${k}`
+                }
+                //console.log(command.error);
+                //command = command.code;
                 //console.log(command);
-                command = `console.log(eval(${JSON.stringify(command)}))`;
+                if (py) {
+                command = `import base64, io
+                           from contextlib import redirect_stdout
+                           stdout = io.StringIO()
+                           x = base64.b64decode
+                           print(exec(x(command)))`
+                }
+                else {
+                command = `console.log(eval(${JSON.stringify(command)}))`
+                }
                 command = command.replaceAll("\\n", "").replaceAll("\n", "");
                 //console.log(command);
                 b = btoa(command);
-                result = execSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.js && node ${k}.js && rm -rf ${k}.js ${k2}.txt'`);
+                let c = `proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2} && echo "$(base64 --decode ${k2})" > ${k} && node ${k} && rm -rf ${k} ${k2}'`
+                if (py) {
+                c = c.replace("node", "python3.11");
+                result = execSync(c);
                 result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
                 //console.log(result);
+                }
             }
             //execSync(`proot-distro login ubuntu --isolated -- eval 'rm ${k}.js && rm ${k2}.txt'`);
             //result = a;
@@ -69,6 +89,7 @@ class Command {
             } else {
                 result = (err.message + "").split("/root/")[1]
             }
+            console.log(err.message);
             //result = err.message;
         
             /*console.log(
