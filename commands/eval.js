@@ -49,7 +49,8 @@ class Command {
             cargs.forEach(f=>result.stdin.write(f + "\n"))
             result.stdin.end();
             result.stdout.on("data", (d, result)=>{
-            let u = d.toString();
+            let u = String(d).toString();
+            console.log(d)
             console.log(u);
             result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
             //console.log(result.length);
