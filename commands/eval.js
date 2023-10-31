@@ -66,8 +66,8 @@ class Command {
                 //console.log(command);
                 b = btoa(command);
                 let c = `proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2} && echo "$(base64 --decode ${k2})" > ${k} && node ${k} && rm -rf ${k} ${k2}'`
-                if (py) {
-                c = c.replace("node", "python3.11");
+                if (true) {
+                //c = c.replace("node", "python3.11");
                 result = execSync(c);
                 result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
                 //console.log(result);
