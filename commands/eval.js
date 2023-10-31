@@ -17,11 +17,12 @@ class Command {
         try {
             let command = args.join(' ').replaceAll("\`\`\`js", "").replaceAll("\`\`\`py", "").replaceAll("\`\`\`", "");
             let py = command.contains("#py")||command.contains("# py");
+            console.log(py);
             console.log('\n');
             console.log(`${message.author.username}:`);
             //console.log(command);
             if (!!py) {
-                command = `require("child_process").execSync("python3.11 <<< ${JSON.stringify(command)}").toString()`
+                command = `require("child_process").execSync("python3.11 <<< ${JSON.stringify(command)}").toString()`;
             }
             console.log(command);
             console.log('\n');
@@ -71,7 +72,7 @@ class Command {
             if (!(err.message + "").split("/root/")[1]) {
                 result = "error happened somewhere but i cant find it lol";
             } else {
-                result = (err.message + "").split("/root/")[1]
+                result = (err.message + "").split("/root/")[1];
             }
             //result = err.message;
         
