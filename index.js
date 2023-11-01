@@ -1,14 +1,13 @@
-import * as dotenv from "dotenv";
-dotenv.config();
+require('dotenv').config();
+
 (async () => {
-    import {readdir} from "node:fs"
-    import {on} from "node:process"
-    import {Client, Intents} from "discord.js"
-    import {commandUtility} from "./utility";
-    commandUtility = new commandUtility();
-    const client = new Client({
+    const fs = require("fs");
+    const nodeprocess = require('process');
+    const discord = require("discord.js");
+    const commandUtility = new (require("./utility.js"))();
+    const client = new discord.Client({
         intents: [
-            Object.values(Intents.FLAGS).reduce((acc, p) => acc | p, 0)
+            Object.values(discord.Intents.FLAGS).reduce((acc, p) => acc | p, 0)
         ],
         partials: [
             "REACTION",
@@ -17,7 +16,7 @@ dotenv.config();
     });
 
     // stop it from fuckin crashing after som stupid discord error
-    on('uncaughtException', function (err) {
+    nodeprocess.on('uncaughtException', function (err) {
         console.log('\n');
         console.log('---------------------');
         console.log('Error!');
@@ -42,21 +41,21 @@ dotenv.config();
 
     // set status
     client.on('ready', () => {
-        readdir('./commands', (err, files) => {
+        fs.readdir('./commands', (err, files) => {
             if (err) {
                 throw err;
             }
 
             for (const fileName of files) {
                 if (fileName.endsWith('.js')) {
-                    const module = import(`./commands/${fileName}`).then(m=>{
+                    const module = require(`./commands/${fileName}`);
                     const command = new module();
                     state.commands[command.name] = command;
                     console.log('Registered', command.name);
                     if (typeof command.setClient === "function") {
                         // this function exists so run it
                         command.setClient(client);
-                    }})
+                    }
                 }
             }
         });

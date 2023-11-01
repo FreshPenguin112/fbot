@@ -1,3 +1,4 @@
+(async()=>{
 class Command {
     constructor() {
         this.name = "eval";
@@ -11,12 +12,8 @@ class Command {
 
 
     run(message, args, util) {
-        import {execSync, exec} from "node:child_process"
-        import {promisify} from "node:util"
-        import {minify} from "uglify-js"
-        import {generate} from "randomstring"
-        exec = promisify(exec)
-        //const exec = require("util").promisify(require("child_process").exec);
+        const {execSync} = require("child_process");
+        const exec = require("util").promisify(require("child_process").exec);
         var result = '';
         let failed = false;
         try {
@@ -38,8 +35,8 @@ class Command {
             console.log(command);
             console.log('\n');
             let b = btoa(command);
-            let k = generate();
-            let k2 = generate();
+            let k = require("randomstring").generate();
+            let k2 = require("randomstring").generate();
             let runner;
             let type;
             let data;
@@ -60,7 +57,7 @@ class Command {
             result = String(stdout)
             if (result.length === 0) {
                 //console.log("doing eval instead");
-                if(!py){command = minify(command, 
+                if(!py){command = require("uglify-js").minify(command, 
                     {
                     compress: {
                         expression: true
@@ -131,3 +128,4 @@ class Command {
 
 // needs to do new Command() in index.js because typing static every time STINKS!
 module.exports = Command;
+})()
