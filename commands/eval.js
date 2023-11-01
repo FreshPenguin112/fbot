@@ -48,6 +48,9 @@ class Command {
             }
             var {stdout, stdin, stderr} = await exec(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`);
             cargs.forEach(f=>stdin.write(f + "\n"))
+            for (i of cargs) {
+                stdin.write(i)
+              }
             stdin.end()
             console.log(result);
             result = String(stdout)
