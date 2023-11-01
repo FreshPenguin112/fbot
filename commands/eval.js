@@ -11,11 +11,10 @@ class Command {
 
 
     run(message, args, util) {
-        const {execSync} = require("child_process");
-        const exec = require("util").promisify(require("child_process").exec);
+        const {execSync, exec} = require("child_process");
         var result = '';
         let failed = false;
-        try {(async()=>{
+        try {
             let command = args.join(' ').replaceAll("\`\`\`js", "").replaceAll("\`\`\`py", "").replaceAll("\`\`\`", "").replaceAll("\\n", "");
             let py = command.includes("#py")||command.includes("# py");
             let cargsindex = command.split("\n").findIndex(x => x.startsWith("#args")||x.startsWith("# args")||x.startsWith("//args")||x.startsWith("// args"));
@@ -46,14 +45,15 @@ class Command {
                 runner = "node";
                 type = "js";
             }
-            var {stdout, stdin, stderr} = await exec(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`);
-            cargs.forEach(f=>stdin.write(f + "\n"))
+            out = "";
+            var p = spawn(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`);
+            p.stdout.on("data", d=>{out+=d.toString()})
+            p.stderr.on("data", d=>{out+=d.toString()})
             for (i of cargs) {
-                stdin.write(i)
+                p.stdin.write(i)
               }
-            stdin.end()
-            console.log(stdout)
-            result = stdout
+            console.log(out)
+            result = out
             if (result.length === 0) {
                 //console.log("doing eval instead");
                 if(!py){command = require("uglify-js").minify(command, 
@@ -87,7 +87,7 @@ class Command {
                 result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
             }
             console.log(result.length);
-            console.log(command)*/})()
+            console.log(command)*/
         } catch (err) {
             //let regex2 = new RegExp(`/.*Error: .*/`);
             //let regex = /.*Error: .*/;
