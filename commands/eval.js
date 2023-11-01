@@ -54,6 +54,7 @@ class Command {
     })(process.stdout.write);
             s.on("data", (d)=>{process.stdout.write(d.toString())});
             for (let i of cargs) {s.stdin.write(i)}
+            console.log(global.serverLog)
             result = global.serverLog;
             result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
             //console.log(result.length);
