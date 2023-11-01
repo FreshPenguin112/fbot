@@ -52,8 +52,8 @@ class Command {
                 stdin.write(i)
               }
             stdin.end()
-            console.log(result);
-            result = String(stdout)
+            console.log(stdout)
+            result = stdout
             if (result.length === 0) {
                 //console.log("doing eval instead");
                 if(!py){command = require("uglify-js").minify(command, 
