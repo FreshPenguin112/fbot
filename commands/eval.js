@@ -57,7 +57,7 @@ class Command {
             for (let i of cargs) {
                 p.stdin.write(i)
               }
-            console.log(out)
+            console.log("|"+out+"|"+"<-output")
             result = out
             if (result.length === 0) {
                 //console.log("doing eval instead");
