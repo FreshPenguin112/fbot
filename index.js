@@ -1,5 +1,5 @@
-let s=import("dotenv");
-s.config();
+import("dotenv");
+dotenv.config();
 (async () => {
     const fs = import("fs");
     const nodeprocess = import('process');
