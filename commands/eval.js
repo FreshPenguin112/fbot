@@ -53,7 +53,10 @@ class Command {
                 console.log(stdout.toString());
                 global.y += stdout.toString();
             });
-            for (let i of cargs) {pr.stdin.write(i),pr.stdin.end()}
+            for (let i of cargs) {
+                pr.stdin.write(i);
+            }
+            pr.stdin.end();
             result = global.y;
             result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
             //console.log(result.length);
