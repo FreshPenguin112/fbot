@@ -1,11 +1,11 @@
 import * as dotenv from "dotenv";
 dotenv.config();
 (async () => {
-    import * as fs from "fs"
-    import * as nodeprocess from "process"
-    import * as discord from "discord.js"
-    import * as c from "./utility.js"
-    const commandUtility = new c();
+    import "fs";
+    import "process";
+    import "discord.js"
+    import {commandUtility} from "./utility";
+    commandUtility = new commandUtility();
     const client = new discord.Client({
         intents: [
             Object.values(discord.Intents.FLAGS).reduce((acc, p) => acc | p, 0)
