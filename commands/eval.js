@@ -47,7 +47,6 @@ class Command {
                 type = "js";
             }
             global.y = [];
-            var consoleStorage = [];
 
             global.log = function(msg){
             global.y.push(msg);
@@ -64,6 +63,7 @@ class Command {
                 pr.stdin.write(i+"\n");
             }
             pr.stdin.end();
+            const consoleStorage = global.y;
             console.warn(consoleStorage);
             result = consoleStorage;
             result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
