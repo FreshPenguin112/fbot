@@ -46,13 +46,14 @@ class Command {
             }
             var s = exec(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`);
             global.serverLog = "";
-            process.stdout.write = (function(write) {
+            global.pr = process
+            global.pr.stdout.write = (function(write) {
                 return function(string, encoding, fileDescriptor) {
                 global.serverLog += string;
                 write.apply(process.stdout, arguments);
             };
-    })(process.stdout.write);
-            s.on("data", (d)=>{process.stdout.write(d.toString())});
+    })(global.pr.stdout.write);
+            s.on("data", (d)=>{global.pr.stdout.write(d.toString())});
             for (let i of cargs) {s.stdin.write(i)}
             console.log(global.serverLog)
             result = global.serverLog;
