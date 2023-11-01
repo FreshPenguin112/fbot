@@ -46,9 +46,9 @@ class Command {
                 type = "js";
             }
             var out = "";
-            execSync(`echo 'proot-distro login ubuntu --isolated -- eval \'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt\'' > ${k}${k2}.sh && chmod +x ${k}${k2}.sh`)
-            var p = spawn(`./${k}${k2}.sh`);
-            execSync(`rm -rf ${k}${k2}.sh`)
+            //execSync(`echo '' > ${k}.sh && chmod +x ${k}.sh`)
+            var p = exec(`proot-distro login ubuntu --isolated -- eval \'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt\'`);
+            //execSync(`rm -rf ${k}.sh`)
             p.stdout.setEncoding('utf8');
             p.stderr.setEncoding('utf8');
             p.stdin.setEncoding('utf8');
