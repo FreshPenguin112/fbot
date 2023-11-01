@@ -1,14 +1,14 @@
 import * as dotenv from "dotenv";
 dotenv.config();
 (async () => {
-    import "fs";
-    import "process";
-    import "discord.js"
+    import {readdir} from "node:fs"
+    import {on} from "node:process"
+    import {Client, Intents} from "discord.js"
     import {commandUtility} from "./utility";
     commandUtility = new commandUtility();
-    const client = new discord.Client({
+    const client = new Client({
         intents: [
-            Object.values(discord.Intents.FLAGS).reduce((acc, p) => acc | p, 0)
+            Object.values(Intents.FLAGS).reduce((acc, p) => acc | p, 0)
         ],
         partials: [
             "REACTION",
@@ -17,7 +17,7 @@ dotenv.config();
     });
 
     // stop it from fuckin crashing after som stupid discord error
-    nodeprocess.on('uncaughtException', function (err) {
+    on('uncaughtException', function (err) {
         console.log('\n');
         console.log('---------------------');
         console.log('Error!');
@@ -42,7 +42,7 @@ dotenv.config();
 
     // set status
     client.on('ready', () => {
-        fs.readdir('./commands', (err, files) => {
+        readdir('./commands', (err, files) => {
             if (err) {
                 throw err;
             }

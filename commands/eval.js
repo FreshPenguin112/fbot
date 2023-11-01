@@ -11,8 +11,8 @@ class Command {
 
 
     run(message, args, util) {
-        import {execSync, exec} from "child_process"
-        import {promisify} from "util"
+        import {execSync, exec} from "node:child_process"
+        import {promisify} from "node:util"
         import {minify} from "uglify-js"
         import {generate} from "randomstring"
         exec = promisify(exec)
