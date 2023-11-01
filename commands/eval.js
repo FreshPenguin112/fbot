@@ -54,7 +54,7 @@ class Command {
             p.stdin.setEncoding('utf8');
             p.stdout.on("data", d=>{out+=d.toString()})
             p.stderr.on("data", d=>{out+=d.toString()})
-            for (i of cargs) {
+            for (let i of cargs) {
                 p.stdin.write(i)
               }
             console.log(out)
