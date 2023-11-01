@@ -11,7 +11,7 @@ class Command {
 
 
     run(message, args, util) {
-        const {execSync, spawnSync} = require("child_process");
+        const {execSync, exec, spawnSync, spawn} = require("child_process");
         const process = require("process");
         let result = '';
         let failed = false;
