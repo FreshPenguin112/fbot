@@ -55,6 +55,8 @@ class Command {
                 global.y += stdout.toString();
             });
             pr.stdout.on('error', (error) => console.log("error caught: ", error));
+            pr.stderr.on('error', (error) => console.log("error caught: ", error));
+            pr.stdin.on('error', (error) => console.log("error caught: ", error));
             for (let i of cargs) {
                 console.log(i);
                 pr.stdin.write(i);
