@@ -21,6 +21,7 @@ class Command {
             let py = command.includes("#py")||command.includes("# py");
             let cargsindex = command.split("\n").findIndex(x => x.startsWith("#args")||x.startsWith("# args")||x.startsWith("//args")||x.startsWith("// args"));
             let cargs = command.split("\n")[cargsindex].replace("# args ", "").replace("#args ", "").replace("// args ", "").replace("//args ", "").split(";");
+            console.log(cargs);
             console.log(py);
             console.log('\n');
             console.log(`${message.author.username}:`);
