@@ -41,7 +41,7 @@ class Command {
                 runner = "node";
                 type = "js";
             }
-            result = execSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`);
+            result = spawnSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`);
             result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
             //console.log(result.length);
             if (result.length === 0) {
@@ -65,7 +65,7 @@ class Command {
                 command = command.replaceAll("\\n", "").replaceAll("\n", "");
                 //console.log(command);
                 b = btoa(command);
-                result = execSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`);
+                result = spawnSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`);
                 result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
                 //console.log(result);
             }
@@ -82,8 +82,8 @@ class Command {
             //let regex2 = new RegExp(`/.*Error: .*/`);
             //let regex = /.*Error: .*/;
             //result = regex.exec((err.message + "").toString())[0];
-            console.log(err.stack);
-            if (!(err.message + "").split("/root/")[1]) {
+            console.log(err.message);
+            if (!(err.message + "").split(".")[1]) {
                 result = "error happened somewhere but i cant find it lol";
             } else {
                 result = (err.message + "").split("/root/")[1];
