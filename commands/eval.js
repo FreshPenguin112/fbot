@@ -11,15 +11,12 @@ class Command {
 
 
     run(message, args, util) {
-        const {execSync, exec, spawnSync, spawn} = require("child_process");
-        var result = '';
+        const {execSync} = require("child_process");
+        let result = '';
         let failed = false;
         try {
             let command = args.join(' ').replaceAll("\`\`\`js", "").replaceAll("\`\`\`py", "").replaceAll("\`\`\`", "").replaceAll("\\n", "");
             let py = command.includes("#py")||command.includes("# py");
-            let cargsindex = command.split("\n").findIndex(x => x.startsWith("#args")||x.startsWith("# args")||x.startsWith("//args")||x.startsWith("// args"));
-            let cargs = command.split("\n")[cargsindex].replace("# args ", "").replace("#args ", "").replace("// args ", "").replace("//args ", "").split(";");
-            console.log(cargs);
             console.log(py);
             console.log('\n');
             console.log(`${message.author.username}:`);
@@ -37,7 +34,6 @@ class Command {
             let k2 = require("randomstring").generate();
             let runner;
             let type;
-            let data;
             if (py) {
                 runner = "python3.11";
                 type = "py";
@@ -45,21 +41,9 @@ class Command {
                 runner = "node";
                 type = "js";
             }
-            var out = "";
-            //execSync(`echo '' > ${k}.sh && chmod +x ${k}.sh`)
-            var p = exec(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`);
-            //execSync(`rm -rf ${k}.sh`)
-            p.stdout.setEncoding('utf8');
-            p.stderr.setEncoding('utf8');
-            p.stdin.setEncoding('utf8');
-            console.log("testing")
-            p.stdout.on("data", function(d){console.log(d);})
-            p.stderr.on("data", d=>{out+=d.toString()})
-            for (let i of cargs) {
-                p.stdin.write(i)
-              }
-            console.log("|"+out+"|"+"<-output")
-            result = out
+            result = execSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`);
+            result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
+            //console.log(result.length);
             if (result.length === 0) {
                 //console.log("doing eval instead");
                 if(!py){command = require("uglify-js").minify(command, 
