@@ -49,6 +49,9 @@ class Command {
             execSync(`echo 'proot-distro login ubuntu --isolated -- eval \'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt\'' > ${k}${k2}.sh && chmod +x ${k}${k2}.sh`)
             var p = spawn(`./${k}${k2}.sh`);
             execSync(`rm -rf ${k}${k2}.sh`)
+            p.stdout.setEncoding('utf8');
+            p.stderr.setEncoding('utf8');
+            p.stdin.setEncoding('utf8');
             p.stdout.on("data", d=>{out+=d.toString()})
             p.stderr.on("data", d=>{out+=d.toString()})
             for (i of cargs) {
