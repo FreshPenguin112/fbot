@@ -1,5 +1,4 @@
-import {config} from "dotenv"
-config()
+import("dotenv").config()
 
 (async () => {
     const fs = import("fs");
