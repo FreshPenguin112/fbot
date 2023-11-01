@@ -51,7 +51,7 @@ class Command {
                 if (!!error) {
                     throw error;
                 }
-                y.push(stdout.toString());
+                y = [stdout.toString()]
                 console.log(stdout.toString());
                 //global.y += stdout.toString();
             });
