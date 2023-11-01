@@ -13,7 +13,7 @@ class Command {
     run(message, args, util) {
         const {execSync, exec, spawnSync, spawn} = require("child_process");
         const process = require("process");
-        const {Stream} = require("stream");
+        const {Transform} = require("stream");
         let result = '';
         let failed = false;
         try {
@@ -45,9 +45,17 @@ class Command {
                 runner = "node";
                 type = "js";
             }
-            var st = new Stream();
+            var st = new Transform({
+                transform(chunk, enc, cb) {
+            
+                    chunk = chunk.toString();
+            
+                    cb(null, chunk);
+            
+                }
+            });
             for (let i of cargs) {st.write(i);}
-            result = execSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`, {stdio:[null, st]});
+            result = execSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`, {stdio:st});
             result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
             //console.log(result.length);
             if (!1/*result.length === 0*/) {
