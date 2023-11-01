@@ -45,7 +45,7 @@ class Command {
                 runner = "node";
                 type = "js";
             }
-            out = "";
+            var out = "";
             var p = spawn(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`);
             p.stdout.on("data", d=>{out+=d.toString()})
             p.stderr.on("data", d=>{out+=d.toString()})
