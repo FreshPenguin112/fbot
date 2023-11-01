@@ -45,7 +45,7 @@ class Command {
                 runner = "node";
                 type = "js";
             }
-            const duplex = new stream.Duplex({
+            const st = new stream.Duplex({
                 write: (chunk, encoding, next) => {
                     console.log(chunk.toString());
                     next();
