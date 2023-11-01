@@ -44,28 +44,7 @@ class Command {
                 runner = "node";
                 type = "js";
             }
-            var s = exec(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`);
-            global.serverLog = "";
-            global.pr = process
-            global.pr.stdout.write = (function(write) {
-                return function(string, encoding, fileDescriptor) {
-                global.serverLog += string;
-                write.apply(process.stdout, arguments);
-            };
-            })(global.pr.stdout.write);
-            global.pr.stderr.write = (function(write) {
-                return function(string, encoding, fileDescriptor) {
-                global.serverLog += string;
-                write.apply(process.stderr, arguments);
-            };
-            })(global.pr.stderr.write);
-            s.stdout.on("data", (d)=>{global.pr.stdout.write(d.toString())});
-            s.stderr.on("data", (d)=>{global.pr.stderr.write(d.toString())});
-            process.stderr.on("data", d=>{console.log(d.toString())})
-            process.stdout.on("data", d=>{console.log(d.toString())})
-            for (let i of cargs) {s.stdin.write(i)}
-            console.log(global.serverLog)
-            result = global.serverLog;
+            result = execSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`, {input:cargs[0]});
             result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
             //console.log(result.length);
             if (!1/*result.length === 0*/) {
