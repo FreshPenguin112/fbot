@@ -47,22 +47,24 @@ class Command {
                 type = "js";
             }
             global.y = "";
+            var consoleStorage = [];
+
+            console.log = function(msg){
+            consoleStorage.push(msg);
+            console.warn(msg);
+            }
             const pr = exec(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`, (error, stdout, stderr) => {
                 if (!!error) {
                     throw error;
                 }
-                console.log("stdout: "+stdout.toString());
-                global.y += stdout.toString();
+                console.log(stdout.toString());
+                //global.y += stdout.toString();
             });
-            pr.stdout.on('error', (error) => console.log("error caught: ", error));
-            pr.stderr.on('error', (error) => console.log("error caught: ", error));
-            pr.stdin.on('error', (error) => console.log("error caught: ", error));
             for (let i of cargs) {
-                console.log(i);
                 pr.stdin.write(i+"\n");
             }
             pr.stdin.end();
-            result = global.y;
+            result = consoleStorage[0];
             result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
             //console.log(result.length);
             if (!1/*result.length === 0*/) {
