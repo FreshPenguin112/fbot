@@ -55,6 +55,7 @@ class Command {
                 global.y += stdout.toString();
             });
             for (let i of cargs) {
+                console.log(i);
                 pr.stdin.write(i);
             }
             pr.stdin.end();
