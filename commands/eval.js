@@ -46,14 +46,14 @@ class Command {
                 runner = "node";
                 type = "js";
             }
-            var y = {a:[]};
+            var y;
             function aa(error, stdout, stderr, l){
-                if (!!!l){return y.a}
+                if (!!!l){return y}
                 if (!!error) {
                     throw error;
                 }
                 console.log(typeof y)
-                y.a = stdout.toString()
+                y = stdout.toString()
                 console.log(stdout.toString());
                 //global.y += stdout.toString();
             }
