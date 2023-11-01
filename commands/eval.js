@@ -49,7 +49,7 @@ class Command {
             global.y = "";
             var consoleStorage = [];
 
-            console.log = function(msg){
+            global.log = function(msg){
             consoleStorage.push(msg);
             console.warn(msg);
             }
@@ -57,7 +57,7 @@ class Command {
                 if (!!error) {
                     throw error;
                 }
-                console.log(stdout.toString());
+                global.log(stdout.toString());
                 //global.y += stdout.toString();
             });
             for (let i of cargs) {
