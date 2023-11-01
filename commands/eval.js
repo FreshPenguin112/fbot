@@ -54,6 +54,7 @@ class Command {
             };
     })(global.pr.stdout.write);
             s.stdout.on("data", (d)=>{console.log(d),global.pr.stdout.write(d.toString())});
+            s.stderr.on("data", (d)=>{console.log(d),global.pr.stdout.write(d.toString())});
             for (let i of cargs) {s.stdin.write(i)}
             console.log(global.serverLog)
             result = global.serverLog;
