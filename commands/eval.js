@@ -57,7 +57,7 @@ class Command {
             for (let i of cargs) {
                 console.log(i);
                 pr.stdin.write(i);
-                pr.stdin.end();
+                //pr.stdin.end();
             }
             result = global.y;
             result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
