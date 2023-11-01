@@ -47,7 +47,8 @@ class Command {
                 type = "js";
             }
             var y = {a:[]};
-            const pr = exec(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`, (error, stdout, stderr) => {
+            function aa(error, stdout, stderr, l){
+                if (!!!l){return y.a}
                 if (!!error) {
                     throw error;
                 }
@@ -55,12 +56,13 @@ class Command {
                 y.a = stdout.toString()
                 console.log(stdout.toString());
                 //global.y += stdout.toString();
-            });
+            }
+            const pr = exec(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`,aa)
             for (let i of cargs) {
                 pr.stdin.write(i+"\n");
             }
             pr.stdin.end();
-            const consoleStorage = y
+            const consoleStorage = y.a;
             console.warn(consoleStorage);
             result = consoleStorage;
             result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
