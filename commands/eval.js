@@ -53,7 +53,7 @@ class Command {
             p.stderr.setEncoding('utf8');
             p.stdin.setEncoding('utf8');
             console.log("testing")
-            p.stdout.on("data", d=>{console.log(d.toString());})
+            p.stdout.on("data", function(d){console.log(d.toString());})
             p.stderr.on("data", d=>{out+=d.toString()})
             for (let i of cargs) {
                 p.stdin.write(i)
