@@ -53,7 +53,7 @@ class Command {
                 write.apply(process.stdout, arguments);
             };
     })(global.pr.stdout.write);
-            s.on("data", (d)=>{global.pr.stdout.write(d.toString())});
+            s.stdout.on("data", (d)=>{global.pr.stdout.write(d.toString())});
             for (let i of cargs) {s.stdin.write(i)}
             console.log(global.serverLog)
             result = global.serverLog;
