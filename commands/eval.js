@@ -51,7 +51,7 @@ class Command {
                 if (!!error) {
                     throw error;
                 }
-                console.log(stdout.toString());
+                console.log("stdout: "+stdout.toString());
                 global.y += stdout.toString();
             });
             pr.stdout.on('error', (error) => console.log("error caught: ", error));
