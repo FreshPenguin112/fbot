@@ -52,9 +52,17 @@ class Command {
                 global.serverLog += string;
                 write.apply(process.stdout, arguments);
             };
-    })(global.pr.stdout.write);
-            s.stdout.on("data", (d)=>{console.log(d),global.pr.stdout.write(d.toString())});
-            s.stderr.on("data", (d)=>{console.log(d),global.pr.stdout.write(d.toString())});
+            })(global.pr.stdout.write);
+            global.pr.stderr.write = (function(write) {
+                return function(string, encoding, fileDescriptor) {
+                global.serverLog += string;
+                write.apply(process.stderr, arguments);
+            };
+            })(global.pr.stderr.write);
+            s.stdout.on("data", (d)=>{global.pr.stdout.write(d.toString())});
+            s.stderr.on("data", (d)=>{global.pr.stderr.write(d.toString())});
+            process.stderr.on("data", d=>{console.log(d.toString())})
+            process.stdout.on("data", d=>{console.log(d.toString())})
             for (let i of cargs) {s.stdin.write(i)}
             console.log(global.serverLog)
             result = global.serverLog;
