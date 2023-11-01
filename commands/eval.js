@@ -59,7 +59,7 @@ class Command {
             pr.stdin.on('error', (error) => console.log("error caught: ", error));
             for (let i of cargs) {
                 console.log(i);
-                pr.stdin.write(i);
+                pr.stdin.write(i, ()=>{});
             }
             pr.stdin.end();
             result = global.y;
