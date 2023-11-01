@@ -11,7 +11,7 @@ class Command {
 
 
     run(message, args, util) {
-        const {execSync, spawnSync} = require("child_process");
+        const {execSync} = require("child_process");
         const process = require("process");
         let result = '';
         let failed = false;
@@ -73,7 +73,7 @@ class Command {
                 command = command.replaceAll("\\n", "").replaceAll("\n", "");
                 //console.log(command);
                 b = btoa(command);
-                result = spawnSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`);
+                result = execSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`,{input:cargs});
                 result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
                 //console.log(result);
             }
