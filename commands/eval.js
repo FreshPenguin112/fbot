@@ -12,11 +12,14 @@ class Command {
 
     run(message, args, util) {
         const {execSync, spawnSync} = require("child_process");
+        const process = require("process");
         let result = '';
         let failed = false;
         try {
             let command = args.join(' ').replaceAll("\`\`\`js", "").replaceAll("\`\`\`py", "").replaceAll("\`\`\`", "").replaceAll("\\n", "");
             let py = command.includes("#py")||command.includes("# py");
+            let cargsindex = command.split("\n").findIndex(x => x.startsWith("#args")||x.startsWith("# args")||x.startsWith("//args")||x.startsWith("// args"));
+            let cargs = command.split("\n")[cargsindex].replace("# args ", "").replace("#args ", "").replace("// args ", "").replace("//args ", "").split(";");
             console.log(py);
             console.log('\n');
             console.log(`${message.author.username}:`);
@@ -41,7 +44,17 @@ class Command {
                 runner = "node";
                 type = "js";
             }
-            result = spawnSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`);
+            var s = exec(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`);
+            global.serverLog = "";
+            process.stdout.write = (function(write) {
+                return function(string, encoding, fileDescriptor) {
+                global.serverLog += string;
+                write.apply(process.stdout, arguments);
+            };
+    })(process.stdout.write);
+            s.on("data", (d)=>{process.stdout.write(d.toString())});
+            for (let i of cargs) {s.stdin.write(i)}
+            result = global.serverLog;
             result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
             //console.log(result.length);
             if (result.length === 0) {
