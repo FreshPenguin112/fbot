@@ -49,7 +49,7 @@ class Command {
                 runner = "node";
                 type = "js";
             }
-            var result = execSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`,{input:cargs});
+            result = execSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`,{input:cargs});
             result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
             //console.log(result.length);
             if (result.length === 0) {
