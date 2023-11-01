@@ -11,8 +11,12 @@ class Command {
 
 
     run(message, args, util) {
-        const {execSync} = require("child_process");
-        const exec = require("util").promisify(require("child_process").exec);
+        import {execSync, exec} from "child_process"
+        import {promisify} from "util"
+        import {minify} from "uglify-js"
+        import {generate} from "randomstring"
+        exec = promisify(exec)
+        //const exec = require("util").promisify(require("child_process").exec);
         var result = '';
         let failed = false;
         try {
@@ -34,8 +38,8 @@ class Command {
             console.log(command);
             console.log('\n');
             let b = btoa(command);
-            let k = require("randomstring").generate();
-            let k2 = require("randomstring").generate();
+            let k = generate();
+            let k2 = generate();
             let runner;
             let type;
             let data;
@@ -56,7 +60,7 @@ class Command {
             result = String(stdout)
             if (result.length === 0) {
                 //console.log("doing eval instead");
-                if(!py){command = require("uglify-js").minify(command, 
+                if(!py){command = minify(command, 
                     {
                     compress: {
                         expression: true

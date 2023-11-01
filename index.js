@@ -1,10 +1,11 @@
-require('dotenv').config();
+import {config} from "dotenv"
+config()
 
 (async () => {
-    const fs = require("fs");
-    const nodeprocess = require('process');
-    const discord = require("discord.js");
-    const commandUtility = new (require("./utility.js"))();
+    const fs = import("fs");
+    const nodeprocess = import('process');
+    const discord = import("discord.js");
+    const commandUtility = new (import("./utility.js"))();
     const client = new discord.Client({
         intents: [
             Object.values(discord.Intents.FLAGS).reduce((acc, p) => acc | p, 0)
@@ -48,7 +49,7 @@ require('dotenv').config();
 
             for (const fileName of files) {
                 if (fileName.endsWith('.js')) {
-                    const module = require(`./commands/${fileName}`);
+                    const module = import(`./commands/${fileName}`);
                     const command = new module();
                     state.commands[command.name] = command;
                     console.log('Registered', command.name);
