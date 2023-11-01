@@ -62,7 +62,7 @@ class Command {
                 pr.stdin.write(i+"\n");
             }
             pr.stdin.end();
-            const consoleStorage = y.a;
+            const consoleStorage = aa()
             console.warn(consoleStorage);
             result = consoleStorage;
             result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
