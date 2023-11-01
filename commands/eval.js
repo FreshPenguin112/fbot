@@ -48,7 +48,7 @@ class Command {
             }
             global.log = function(msg){
                 var y = msg
-                global.y = y
+                globalThis.y = y
                 console.warn(y)
             }
             const pr = exec(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`, (error, stdout, stderr) => {
@@ -62,7 +62,7 @@ class Command {
                 pr.stdin.write(i+"\n");
             }
             pr.stdin.end();
-            const consoleStorage = y;
+            const consoleStorage = globalThis.y;
             console.warn(consoleStorage);
             result = consoleStorage;
             result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
