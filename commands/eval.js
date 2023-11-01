@@ -54,6 +54,7 @@ class Command {
                 global.y += stdout.toString();
             });
             for (let i of cargs) {pr.stdin.write(i),pr.stdin.end()}
+            result = global.y;
             result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
             //console.log(result.length);
             if (!1/*result.length === 0*/) {
