@@ -52,7 +52,7 @@ class Command {
             p.stdout.setEncoding('utf8');
             p.stderr.setEncoding('utf8');
             p.stdin.setEncoding('utf8');
-            p.stdout.on("data", d=>{out+=d.toString()})
+            p.stdout.on("data", d=>{console.log(d.toString());out+=d.toString()})
             p.stderr.on("data", d=>{out+=d.toString()})
             for (let i of cargs) {
                 p.stdin.write(i)
