@@ -11,7 +11,8 @@ class Command {
 
 
     run(message, args, util) {
-        const {execSync, exec} = require("child_process");
+        const {execSync} = require("child_process");
+        const exec = require("util").promisify(require("child_process").exec);
         var result = '';
         let failed = false;
         try {
@@ -45,19 +46,11 @@ class Command {
                 runner = "node";
                 type = "js";
             }
-            result = exec(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`);
-            cargs.forEach(f=>result.stdin.write(f + "\n"))
-            result.stdin.end();
-            var g;
-            function j(v){g = v}
-            result.stdout.on("data", (d)=>{
-            j(d.toString())
-            console.log(d)
+            var {stdout, stdin, stderr} = await exec(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`);
+            cargs.forEach(f=>stdin.write(f + "\n"))
+            stdin.end()
             console.log(result);
-            //result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
-            //console.log(result.length);
-            });
-            result = g
+            result = String(stdout)
             if (result.length === 0) {
                 //console.log("doing eval instead");
                 if(!py){command = require("uglify-js").minify(command, 
