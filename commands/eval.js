@@ -46,13 +46,13 @@ class Command {
                 runner = "node";
                 type = "js";
             }
-            var y = [];
+            var y = {a:[]}
             const pr = exec(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`, (error, stdout, stderr, y) => {
                 if (!!error) {
                     throw error;
                 }
                 console.log(typeof y)
-                y = [stdout.toString()]
+                y.a = [stdout.toString()]
                 console.log(stdout.toString());
                 //global.y += stdout.toString();
             });
