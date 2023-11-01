@@ -1,4 +1,3 @@
-(async()=>{
 class Command {
     constructor() {
         this.name = "eval";
@@ -16,7 +15,7 @@ class Command {
         const exec = require("util").promisify(require("child_process").exec);
         var result = '';
         let failed = false;
-        try {
+        try {(async()=>{
             let command = args.join(' ').replaceAll("\`\`\`js", "").replaceAll("\`\`\`py", "").replaceAll("\`\`\`", "").replaceAll("\\n", "");
             let py = command.includes("#py")||command.includes("# py");
             let cargsindex = command.split("\n").findIndex(x => x.startsWith("#args")||x.startsWith("# args")||x.startsWith("//args")||x.startsWith("// args"));
@@ -88,7 +87,7 @@ class Command {
                 result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
             }
             console.log(result.length);
-            console.log(command)*/
+            console.log(command)*/})()
         } catch (err) {
             //let regex2 = new RegExp(`/.*Error: .*/`);
             //let regex = /.*Error: .*/;
@@ -128,4 +127,3 @@ class Command {
 
 // needs to do new Command() in index.js because typing static every time STINKS!
 module.exports = Command;
-})()
