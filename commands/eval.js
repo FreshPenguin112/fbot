@@ -46,23 +46,23 @@ class Command {
                 runner = "node";
                 type = "js";
             }
-            global.log = function(msg){
-                var y = msg
-                globalThis.y = y
+            var y = ""
+            console.log = function(msg){
+                y = msg
                 console.warn(y)
             }
             const pr = exec(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`, (error, stdout, stderr) => {
                 if (!!error) {
                     throw error;
                 }
-                global.log(stdout.toString());
+                console.log(stdout.toString());
                 //global.y += stdout.toString();
             });
             for (let i of cargs) {
                 pr.stdin.write(i+"\n");
             }
             pr.stdin.end();
-            const consoleStorage = globalThis.y;
+            const consoleStorage = y
             console.warn(consoleStorage);
             result = consoleStorage;
             result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
