@@ -64,7 +64,7 @@ class Command {
                 pr.stdin.write(i+"\n");
             }
             pr.stdin.end();
-            result = consoleStorage[0];
+            result = consoleStorage;
             result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
             //console.log(result.length);
             if (!1/*result.length === 0*/) {
