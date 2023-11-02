@@ -111,7 +111,7 @@ class Command {
                 result = `${err.stack}`;
             }*/
         }
-        message.reply(`${failed ? 'epic fucking fail loser skill issue\n' : ''}\`\`\`${failed ? result : JSON.stringify(result)}\`\`\``);
+        message.reply(`${failed ? 'epic fucking fail loser skill issue\n' : ''}\`\`\`${failed ? result : result/*JSON.stringify(result)*/}\`\`\``);
     }
     invoke(message, args, util) {
         try {
