@@ -50,7 +50,7 @@ class Command {
                 type = "js";
             }
             result = execSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`,{input:cargs});
-            result = result.toString()/*.replaceAll("\\n", "").replaceAll("\n", "");*/
+            result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
             //console.log(result.length);
             if (result.length === 0) {
                 //console.log("doing eval instead");
@@ -111,7 +111,7 @@ class Command {
                 result = `${err.stack}`;
             }*/
         }
-        message.reply(`${failed ? 'epic fucking fail loser skill issue\n' : ''}\`\`\`${failed ? result : result/*JSON.stringify(result)*/}\`\`\``);
+        message.reply(`${failed ? 'epic fucking fail loser skill issue\n' : ''}\`\`\`${failed ? result : JSON.stringify(result)}\`\`\``);
     }
     invoke(message, args, util) {
         try {
