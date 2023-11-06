@@ -19,13 +19,15 @@ class Command {
             let command = args.join(' ').replaceAll("\`\`\`js", "").replaceAll("\`\`\`py", "").replaceAll("\`\`\`", "").replaceAll("\\n", "");
             let py = command.includes("#py")||command.includes("# py");
             let cargsindex = command.split("\n").findIndex(x => x.startsWith("#args")||x.startsWith("# args")||x.startsWith("//args")||x.startsWith("// args"));
-            let cargs = command.split("\n")[cargsindex].replace("# args ", "").replace("#args ", "").replace("// args ", "").replace("//args ", "").split(";");
+            let cargs = "";
+            if (cargsindex !== -1) {
+            cargs = command.split("\n")[cargsindex].replace("# args ", "").replace("#args ", "").replace("// args ", "").replace("//args ", "").split(";");
             let cargs2 = "";
             for (let i of cargs) {
                 cargs2 += i+"\n";
-            }
+            };
             cargs = cargs2;
-            console.log(py);
+            };
             console.log('\n');
             console.log(`${message.author.username}:`);
             //console.log(command);
