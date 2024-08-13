@@ -18,6 +18,9 @@ class Command {
         try {
             let command = args.join(' ').replaceAll("\`\`\`js", "").replaceAll("\`\`\`py", "").replaceAll("\`\`\`", "").replaceAll("\\n", "");
             let py = command.includes("#py")||command.includes("# py");
+            if(py){command=command.replace("#py ", "").replace("# py ", "").replace("#py", "").replace("# py", "");}
+            let local = command.startsWith("local") && message.author.id == 712497713043734539
+            if(local)command=command.replace("local", "")
             let cargsindex = command.split("\n").findIndex(x => x.startsWith("#args")||x.startsWith("# args")||x.startsWith("//args")||x.startsWith("// args"));
             let cargs = "";
             if (cargsindex !== -1) {
@@ -45,13 +48,13 @@ class Command {
             let runner;
             let type;
             if (py) {
-                runner = "python3.11";
+                runner = "python3";
                 type = "py";
             } else {
                 runner = "node";
                 type = "js";
             }
-            result = execSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`,{input:cargs});
+            result = local ? eval(command) : execSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`,{input:cargs,timeout:5000});
             result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
             //console.log(result.length);
             if (result.length === 0) {

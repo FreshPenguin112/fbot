@@ -6,9 +6,7 @@ require('dotenv').config();
     const discord = require("discord.js");
     const commandUtility = new (require("./utility.js"))();
     const client = new discord.Client({
-        intents: [
-            Object.values(discord.Intents.FLAGS).reduce((acc, p) => acc | p, 0)
-        ],
+        intents: new discord.Intents(32767),
         partials: [
             "REACTION",
             "CHANNEL"
@@ -28,8 +26,8 @@ require('dotenv').config();
     client.on('ready', () => {
         console.log(client.user.tag + " is online")
     });
-
-    await client.login("MTEzOTkzMTAwNTM2OTcyMDg3Mg.G9tz8c.1IuPyYe4AkfaaPQUS01-BVlfG5LWApE8GyjByg").catch((e) => {
+    global.client=client
+    await client.login("MTEzOTkzMTAwNTM2OTcyMDg3Mg.G62FBs.UgJem9PJBvlhxckRqsUeB6BU2VafilDbS-XdtM").catch((e) => {
         console.error('Login Error;', e);
     });
 
