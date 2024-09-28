@@ -15,7 +15,16 @@ class Command {
         const process = require("process");
         let result = '';
         let failed = false;
+        let id = 983171763972218970;
+        let id2 = 1285035732595114014;
+        //console.log(message.guild.id != id);
+        //console.log(message.channel.id == id2);
         try {
+            if(process.argv.includes("--lock")) {
+                if(message.guild.id != id || message.channel.id != id2) {
+                    //console.log("bad");
+                    result = "bot is currently locked down and can only be used in fresh's private testing server(most likely for debugging purposes)";
+                } else {
             let command = args.join(' ').replaceAll("\`\`\`js", "").replaceAll("\`\`\`py", "").replaceAll("\`\`\`", "").replaceAll("\\n", "");
             let py = command.includes("#py")||command.includes("# py");
             if(py){command=command.replace("#py ", "").replace("# py ", "").replace("#py", "").replace("# py", "");}
@@ -54,7 +63,10 @@ class Command {
                 runner = "node";
                 type = "js";
             }
-            result = local ? eval(command) : execSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`,{input:cargs,timeout:5000});
+            let debug = process.argv.includes("--debug");
+            //console.log(debug);
+            let debugcode = `rsync -a --delete --exclude=/tmp/ --exclude=/proc/ --exclude=/sys/ --exclude=/dev/ / /tmp/root_backup && diff -qr / /tmp/root_backup | grep -q . && rsync -a --delete /tmp/root_backup/ /`
+            result = local ? eval(command) : execSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type}${debug ? " && " + debugcode : ""}'`,{input:cargs,timeout:5000});
             result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
             //console.log(result.length);
             if (result.length === 0) {
@@ -78,10 +90,11 @@ class Command {
                 command = command.replaceAll("\\n", "").replaceAll("\n", "");
                 //console.log(command);
                 b = btoa(command);
-                result = execSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type} && rm -rf ${k}.${type} ${k2}.txt'`,{input:cargs});
+                result = execSync(`proot-distro login ubuntu --isolated -- eval 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type}${debug ? " && " + debugcode : ""}`,{input:cargs,timeout:5000});
                 result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
                 //console.log(result);
-            }
+                
+            }}}
             //execSync(`proot-distro login ubuntu --isolated -- eval 'rm ${k}.js && rm ${k2}.txt'`);
             //result = a;
             /*if (result.length === 0) {
