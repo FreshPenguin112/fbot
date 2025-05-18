@@ -1,8 +1,14 @@
 require('dotenv').config();
-
+//require('child_process').execSync(`docker run --rm -d --network host --env ALL_PROXY=socks5h://127.0.0.1:9050 eval-runner`)
 (async () => {
     const fs = require("fs");
+    const { execSync } = require("child_process");
     const nodeprocess = require('process');
+    if (nodeprocess.argv.includes("--restart-container") || nodeprocess.argv.includes("-r")) {    
+        execSync("docker stop eval-runner || :");
+        execSync("docker remove eval-runner || :");
+        execSync("docker run --rm -d -it --network host --env ALL_PROXY=socks5h://127.0.0.1:9050 --name eval-runner eval-runner:latest", {stdio:"inherit"});
+    }
     const discord = require("discord.js");
     const commandUtility = new (require("./utility.js"))();
     const client = new discord.Client({
@@ -27,7 +33,7 @@ require('dotenv').config();
         console.log(client.user.tag + " is online")
     });
     global.client=client
-    await client.login("MTEzOTkzMTAwNTM2OTcyMDg3Mg.G62FBs.UgJem9PJBvlhxckRqsUeB6BU2VafilDbS-XdtM").catch((e) => {
+    await client.login("MTEzOTkzMTAwNTM2OTcyMDg3Mg.GYL9lJ.QuoldOHilPvYyRlUQZVvAcOPBmsrnW9XnExwSM").catch((e) => {
         console.error('Login Error;', e);
     });
 
