@@ -113,12 +113,12 @@ class Command {
             //let regex = /.*Error: .*/;
             //result = regex.exec((err.message + "").toString())[0];
             console.log(err.message);
-            if (!(err.message + "").split(".")[1]) {
+            /*if (!(err.message + "").split(".")[1]) {
                 result = "error happened somewhere but i cant find it lol";
             } else {
-                result = (err.message + "").split("/root/")[1];
-            }
-            //result = err.message;
+                result = err.message;
+            }*/
+            result = err.message;
         
             /*console.log(
                 regex.exec((err.message + "").toString())[0]
@@ -133,7 +133,8 @@ class Command {
                 result = `${err.stack}`;
             }*/
         }
-        message.reply(`${failed ? 'epic fucking fail loser skill issue\n' : ''}${codeblock ? "\`\`\`" + String(result) + "\`\`\`" : result}`);
+        console.log(String(result));
+        message.reply(`${failed ? 'epic fucking fail loser skill issue\n' : ""}${codeblock ? "\`\`\`" + String(result) + "\`\`\`" : result}`);
     }
     invoke(message, args, util) {
         try {
