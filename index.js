@@ -6,7 +6,10 @@ require('dotenv').config();
     const nodeprocess = require('process');
     if (nodeprocess.argv.includes("--restart-container") || nodeprocess.argv.includes("-r")) {    
         execSync("docker stop eval-runner || :");
-        execSync("docker remove eval-runner || :");
+        execSync("docker stop tor-router || :");
+        execSync("docker rm tor-router || :");
+        execSync("docker rm eval-runner || :");
+        execSync("docker run -d --name tor-router flungo/tor-router", {stdio:"inherit"});
         execSync("docker run --rm -d -it --network host --env ALL_PROXY=socks5h://127.0.0.1:9050 --name eval-runner eval-runner:latest", {stdio:"inherit"});
     }
     const discord = require("discord.js");

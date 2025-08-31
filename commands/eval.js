@@ -54,7 +54,7 @@ class Command {
         let debug = process.argv.includes("--debug");
         //console.log(debug);
         let debugcode = `rsync -a --delete --exclude=/tmp/ --exclude=/proc/ --exclude=/sys/ --exclude=/dev/ / /tmp/root_backup && diff -qr / /tmp/root_backup | grep -q . && rsync -a --delete /tmp/root_backup/ /`
-        result = local ? eval(command) : execSync(`docker exec eval-runner sh -c 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type}${debug ? " && " + debugcode : ""}'`,{input:cargs,timeout:30000});
+        result = local ? eval(command) : execSync(`docker exec eval-runner timeout 5s sh -c 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type}' || { [ $? -eq 124 ] && echo "haha u hit timeout limit"; }`,{input:cargs,timeout:30000});
         result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
         //console.log(result.length);
         if (result.length === 0) {
@@ -78,7 +78,7 @@ class Command {
                 command = command.replaceAll("\\n", "").replaceAll("\n", "");
                 //console.log(command);
                 b = btoa(command);
-                result = execSync(`docker exec eval-runner sh -c 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type}${debug ? " && " + debugcode : ""}'`,{input:cargs,timeout:30000});
+                result = execSync(`docker exec eval-runner timeout 5s sh -c 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type}' || { [ $? -eq 124 ] && echo "haha u hit timeout limit"; }`,{input:cargs,timeout:30000});
                 result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
                 //console.log(result);
 
@@ -88,19 +88,20 @@ class Command {
     run(message, args, util) {
         let id = 983171763972218970;
         let id2 = 1285035732595114014;
+        let id3 = 1403024594528370708;
         //console.log(message.guild.id != id);
         //console.log(message.channel.id == id2);
         try {
             if(process.argv.includes("--lock")) {
-                if(message.channel.id != id2) {
+                if(!([id2,id3].includes(parseInt(message.channel.id)))) {
                     //console.log("bad");
-                    result = "bot is currently locked down and can only be used in fresh's private testing server(most likely for debugging purposes)";
+                    result = message.guild.id == 1392776052870480003 ? "bot is locked down but since this is the silly goobers central server it can be used in <#1403024594528370708>" : "bot is currently locked down and can only be used in fresh's private testing server(most likely for debugging purposes)";
                 } else {
                     var codeblock = true;
                     this.main(message, args, util);
                 }
             } else {
-                    if (!([id2, 1038251459843723274].includes(parseInt(message.channel.id)))) {
+                    if (!(process.argv.includes("--anychannel")) && !([id2, 1038251459843723274].includes(parseInt(message.channel.id)))) {
                         var codeblock = false;
                         result = "This command can only be used in <#1038251459843723274>";
                     } else {
