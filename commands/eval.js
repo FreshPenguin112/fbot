@@ -16,7 +16,7 @@ class Command {
         let command = args.join(' ').replaceAll("\`\`\`js", "").replaceAll("\`\`\`py", "").replaceAll("\`\`\`", "").replaceAll("\\n", "");
         let py = command.includes("#py")||command.includes("# py");
         if(py){command=command.replace("#py ", "").replace("# py ", "").replace("#py", "").replace("# py", "");}
-        let local = command.startsWith("local") && message.author.id == 712497713043734539
+        let local = command.startsWith("local") && message.author.id == 712497713043734539 // my discord user id, used so only the bot owner can use the local keyword to run nodejs code in this context, not sandboxed with docker
         if(local)command=command.replace("local", "")
             let cargsindex = command.split("\n").findIndex(x => x.startsWith("#args")||x.startsWith("# args")||x.startsWith("//args")||x.startsWith("// args"));
         let cargs = "";
@@ -51,9 +51,9 @@ class Command {
             runner = "node";
             type = "js";
         }
-        let debug = process.argv.includes("--debug");
+        //let debug = process.argv.includes("--debug");
         //console.log(debug);
-        let debugcode = `rsync -a --delete --exclude=/tmp/ --exclude=/proc/ --exclude=/sys/ --exclude=/dev/ / /tmp/root_backup && diff -qr / /tmp/root_backup | grep -q . && rsync -a --delete /tmp/root_backup/ /`
+        //let debugcode = `rsync -a --delete --exclude=/tmp/ --exclude=/proc/ --exclude=/sys/ --exclude=/dev/ / /tmp/root_backup && diff -qr / /tmp/root_backup | grep -q . && rsync -a --delete /tmp/root_backup/ /`
         result = local ? eval(command) : execSync(`docker exec eval-runner timeout 5s sh -c 'echo "${b}" > ${k2}.txt && echo "$(base64 --decode ${k2}.txt)" > ${k}.${type} && ${runner} ${k}.${type}' || { [ $? -eq 124 ] && echo "haha u hit timeout limit"; }`,{input:cargs,timeout:30000});
         result = result.toString().replaceAll("\\n", "").replaceAll("\n", "");
         //console.log(result.length);
@@ -86,24 +86,24 @@ class Command {
     }
 
     run(message, args, util) {
-        let id = 983171763972218970;
-        let id2 = 1285035732595114014;
-        let id3 = 1403024594528370708;
+        let id = 983171763972218970; //this is my private testing server guild id
+        let id2 = 1285035732595114014; //this is my eval bot private testing channel id in my private testing server
+        let id3 = 1403024594528370708; //the id here is the eval bot channel in the sgc server(personal server)
         //console.log(message.guild.id != id);
         //console.log(message.channel.id == id2);
         try {
             if(process.argv.includes("--lock")) {
-                if(!([id2,id3].includes(parseInt(message.channel.id)))) {
+                if(!([id2,id3].includes(parseInt(message.channel.id)))) { //id2 and id3(see above) are debug channels and can be used when bot is in lock mode
                     //console.log("bad");
-                    result = message.guild.id == 1392776052870480003 ? "bot is locked down but since this is the silly goobers central server it can be used in <#1403024594528370708>" : "bot is currently locked down and can only be used in fresh's private testing server(most likely for debugging purposes)";
+                    result = message.guild.id == 1392776052870480003 /* sgc server(personal server) guild id*/ ? "bot is locked down but since this is the silly goobers central server it can be used in <#1403024594528370708>"/* <- the id here is the eval bot channel in the sgc server(personal server)*/ : "bot is currently locked down and can only be used in fresh's private testing server(most likely for debugging purposes)";
                 } else {
                     var codeblock = true;
                     this.main(message, args, util);
                 }
             } else {
-                    if (!(process.argv.includes("--anychannel")) && !([id2, 1038251459843723274].includes(parseInt(message.channel.id)))) {
+                    if (!(process.argv.includes("--anychannel")) && !([1038251459843723274/* pm discord server commands channel */].includes(parseInt(message.channel.id)))) { //
                         var codeblock = false;
-                        result = "This command can only be used in <#1038251459843723274>";
+                        result = "This command can only be used in <#1038251459843723274>"; // <- this id is the commands channel in the pm discord server
                     } else {
                         var codeblock = true;
                         this.main(message, args, util);
@@ -120,7 +120,7 @@ class Command {
                 result = err.message;
             }*/
             result = err.message;
-        
+            codeblock = true;
             /*console.log(
                 regex.exec((err.message + "").toString())[0]
                 );*/
@@ -128,7 +128,7 @@ class Command {
             console.error("logging debug data:")
             console.error();*/
             //result = "lmao you did a error somewhere nerd :nerdclown: :haha:"
-            failed = true;
+            //failed = true;
 
             /*if (err.stack) {
                 result = `${err.stack}`;

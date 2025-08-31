@@ -4,14 +4,64 @@ require('dotenv').config();
     const fs = require("fs");
     const { execSync } = require("child_process");
     const nodeprocess = require('process');
-    if (nodeprocess.argv.includes("--restart-container") || nodeprocess.argv.includes("-r")) {    
-        execSync("docker stop eval-runner || :");
-        execSync("docker stop tor-router || :");
-        execSync("docker rm tor-router || :");
-        execSync("docker rm eval-runner || :");
-        execSync("docker run -d --name tor-router flungo/tor-router", {stdio:"inherit"});
-        execSync("docker run --rm -d -it --network host --env ALL_PROXY=socks5h://127.0.0.1:9050 --name eval-runner eval-runner:latest", {stdio:"inherit"});
-    }
+    if (process.argv.includes("--restart-container") || process.argv.includes("-r")) {
+        try {
+            // Stop and remove existing containers
+            execSync("docker stop eval-runner || :", { stdio: "inherit" });
+            execSync("docker stop tor-router || :", { stdio: "inherit" });
+            execSync("docker rm tor-router || :", { stdio: "inherit" });
+            execSync("docker rm eval-runner || :", { stdio: "inherit" });
+
+            // Start Tor container in daemon mode with transparent SOCKS
+            execSync("docker run -d --dns 127.0.0.1 --name tor-router -v torrc:/etc/tor/torrc:ro osminogin/tor-simple", { stdio: "inherit" });
+
+            let isRunning = false;
+            const startTime = Date.now();
+
+            while (true) {
+                const status = execSync("docker inspect --format '{{.State.Health.Status}}' tor-router")
+                .toString()
+                .trim();
+                const elapsed = Math.floor((Date.now() - startTime) / 1000);
+                const minutes = Math.floor(elapsed / 60);
+                const seconds = elapsed % 60;
+
+                process.stdout.clearLine();
+                process.stdout.cursorTo(0);
+                process.stdout.write(`Waiting for tor-router to start... ${minutes}m ${seconds}s`);
+
+                if (status === "healthy") {
+                    isRunning = true;
+                    break;
+                }
+
+                execSync("sleep 1");
+            }
+
+            process.stdout.write("\n");
+
+            if (!isRunning) {
+                throw new Error("tor-router failed to start");
+            }
+
+
+            process.stdout.write("\n");
+
+            if (!isRunning) {
+                throw new Error("tor-router failed to start");
+            }
+
+            // Run app container using Tor container's network namespace
+            execSync(
+                "docker run -id --network container:tor-router --cap-add=NET_ADMIN --name eval-runner eval-runner:latest ",
+                { stdio: "inherit" }
+            );
+
+            console.log("[+] eval-runner started successfully through Tor");
+        } catch (err) {
+            console.error("Error restarting containers:", err);
+        }
+}
     const discord = require("discord.js");
     const commandUtility = new (require("./utility.js"))();
     const client = new discord.Client({
@@ -36,7 +86,7 @@ require('dotenv').config();
         console.log(client.user.tag + " is online")
     });
     global.client=client
-    await client.login("MTEzOTkzMTAwNTM2OTcyMDg3Mg.GYL9lJ.QuoldOHilPvYyRlUQZVvAcOPBmsrnW9XnExwSM").catch((e) => {
+    await client.login(process.env.TOKEN).catch((e) => {
         console.error('Login Error;', e);
     });
 
@@ -78,10 +128,9 @@ require('dotenv').config();
                 // if this is an admin command, return if we not admin
                 if (command.attributes.admin === true) {
                     // check admin state
-                    const isAdmin = message.member._roles.includes(message.guild.roles.cache.get('1038234739708006481').id)
-                        || message.member._roles.includes(message.guild.roles.cache.get('1081053191602450552').id);
+                    const isAdmin = message.author.id == 712497713043734539; //my discord user id
                     if (!isAdmin) {
-                        message.reply("Only developers can run this command.");
+                        message.reply("Only the bot owner can run this command.");
                         return;
                     }
                 }
