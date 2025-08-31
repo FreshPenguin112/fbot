@@ -13,7 +13,7 @@ require('dotenv').config();
             execSync("docker rm eval-runner || :", { stdio: "inherit" });
 
             // Start Tor container in daemon mode with transparent SOCKS
-            execSync("docker run -d --dns 127.0.0.1 --name tor-router -v torrc:/etc/tor/torrc:ro osminogin/tor-simple", { stdio: "inherit" });
+            execSync("docker run -d --dns 127.0.0.1 --name tor-router -v ./torrc:/etc/tor/torrc:ro osminogin/tor-simple", { stdio: "inherit" });
 
             let isRunning = false;
             const startTime = Date.now();
