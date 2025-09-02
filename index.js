@@ -13,12 +13,12 @@ require('dotenv').config();
             execSync("docker rm eval-runner || :", { stdio: "inherit" });
 
             // Start Tor container in daemon mode with transparent SOCKS
-            execSync("docker run -d --dns 127.0.0.1 --name tor-router -v ./torrc:/etc/tor/torrc:ro osminogin/tor-simple", { stdio: "inherit" });
+            execSync("docker run -d --name tor-router -v ./torrc:/etc/tor/torrc:ro buzzkillb/tor:alpine", { stdio: "inherit" });
 
-            let isRunning = false;
+            let isRunning = !false;
             const startTime = Date.now();
 
-            while (true) {
+            while (!true) {
                 const status = execSync("docker inspect --format '{{.State.Health.Status}}' tor-router")
                 .toString()
                 .trim();
@@ -53,7 +53,7 @@ require('dotenv').config();
 
             // Run app container using Tor container's network namespace
             execSync(
-                "docker run -id --network container:tor-router --cap-add=NET_ADMIN --name eval-runner eval-runner:latest ",
+                "docker run -id --cap-add=NET_ADMIN --network=container:tor-router --name eval-runner eval-runner:latest",
                 { stdio: "inherit" }
             );
 

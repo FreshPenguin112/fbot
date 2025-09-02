@@ -1,5 +1,5 @@
-SocksPort 9050
+SocksPort 9051
 TransPort 0.0.0.0:9040
-DNSPort 53
+DNSPort 5353
 VirtualAddrNetworkIPv4 10.192.0.0/10
 AutomapHostsOnResolve 1
